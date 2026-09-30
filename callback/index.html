@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ActiveVibeStats 授权回调</title>
+<style>
+body{font-family:-apple-system,"PingFang SC","Microsoft YaHei",Arial,sans-serif;max-width:640px;margin:64px auto;padding:0 20px;line-height:1.7;color:#222;background:#fafafa}
+.card{background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:28px}
+pre{background:#111;color:#25f4ee;padding:16px;border-radius:8px;word-break:break-all;white-space:pre-wrap;font-size:15px}
+button{background:#fe2c55;color:#fff;border:0;border-radius:8px;padding:10px 24px;font-size:16px;cursor:pointer}
+.err{color:#c00}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>授权回调</h1>
+<div id="ok" style="display:none">
+<p>授权成功！请复制下面的 <strong>code</strong> 发给你的助手：</p>
+<pre id="code"></pre>
+<p><button id="copyBtn">复制 code</button> <span id="copied" style="color:#090"></span></p>
+</div>
+<div id="fail" style="display:none">
+<p class="err">授权未成功。请截图此页发给你的助手。</p>
+<pre id="err"></pre>
+</div>
+</div>
+<script>
+var p = new URLSearchParams(location.search);
+var code = p.get('code'), err = p.get('error');
+if (code) {
+  document.getElementById('ok').style.display = 'block';
+  document.getElementById('code').textContent = code;
+  document.getElementById('copyBtn').onclick = function () {
+    navigator.clipboard.writeText(code).then(function(){ document.getElementById('copied').textContent = '已复制！'; });
+  };
+} else {
+  document.getElementById('fail').style.display = 'block';
+  document.getElementById('err').textContent = 'error=' + err + '\n' + (p.get('error_description') || '');
+}
+</script>
+</body>
+</html>
