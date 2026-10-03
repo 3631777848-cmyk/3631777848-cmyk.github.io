@@ -16,7 +16,7 @@ button{background:#fe2c55;color:#fff;border:0;border-radius:8px;padding:10px 24p
 <div class="card">
 <h1>授权回调</h1>
 <div id="ok" style="display:none">
-<p>授权成功！请复制下面的 <strong>code</strong> 发给你的助手：</p>
+<p>授权成功！请复制下面的 <strong id="codeLabel">code</strong> 发给你的助手：</p>
 <pre id="code"></pre>
 <p><button id="copyBtn">复制 code</button> <span id="copied" style="color:#090"></span></p>
 </div>
@@ -27,9 +27,10 @@ button{background:#fe2c55;color:#fff;border:0;border-radius:8px;padding:10px 24p
 </div>
 <script>
 var p = new URLSearchParams(location.search);
-var code = p.get('code'), err = p.get('error');
+var code = p.get('auth_code') || p.get('code'), err = p.get('error');
 if (code) {
   document.getElementById('ok').style.display = 'block';
+  if (p.get('auth_code')) document.getElementById('codeLabel').textContent = 'auth_code';
   document.getElementById('code').textContent = code;
   document.getElementById('copyBtn').onclick = function () {
     navigator.clipboard.writeText(code).then(function(){ document.getElementById('copied').textContent = '已复制！'; });
